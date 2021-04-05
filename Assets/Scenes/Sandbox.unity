@@ -628,7 +628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6971753843071497031, guid: 22fe535973d6f4e41acd0744663f86fd, type: 3}
       propertyPath: m_Name
-      value: Bool
+      value: Simulate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22fe535973d6f4e41acd0744663f86fd, type: 3}
@@ -648,12 +648,32 @@ PrefabInstance:
       propertyPath: m_CullTransparentMesh
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1264927000056322730, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: max
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6154591493422428160, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: m_Value
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6154591493422428160, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: m_MaxValue
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 6464782866647859455, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
       propertyPath: m_Name
-      value: Float
+      value: FloatData
+      objectReference: {fileID: 0}
+    - target: {fileID: 6942242603931541234, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6942242603931541234, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6942242603931541234, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7761709874824127295, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
@@ -678,6 +698,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8374891163818087367, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8374891163818087367, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8374891163818087367, guid: 5dae61faeea693646bd3dba549e3eea0, type: 3}
