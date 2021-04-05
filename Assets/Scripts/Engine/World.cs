@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+    public BoolData simulate;
+
     static World instance;
     public static World Instance { get { return instance; } }
     public List<Body> bodies { get; set; } = new List<Body>();
@@ -15,6 +17,8 @@ public class World : MonoBehaviour
 
     void Update()
     {
+        if (!simulate.value) return;
+
         float dt = Time.deltaTime;
         bodies.ForEach(body => body.Step(dt));
         bodies.ForEach(body => Integrator.ExplicitEuler(body, dt));

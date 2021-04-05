@@ -18,6 +18,6 @@ public class Body : MonoBehaviour
 
     public void Step(float dt)
     {
-        acceleration = (force / mass) * dt;
+        acceleration = new Vector2(0, -9.81f) + (force / mass);
     }
 }

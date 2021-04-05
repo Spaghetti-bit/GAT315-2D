@@ -8,14 +8,13 @@ public class Creator : MonoBehaviour
     public float speed = 100;
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButton(0))
         {
             Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             GameObject gameObject = Instantiate(original, position, Quaternion.identity);
             if(gameObject.TryGetComponent<Body>(out Body body))
             {
                 Vector2 force = Random.insideUnitSphere.normalized * speed;
-
                 body.AddForce(force);
                 World.Instance.bodies.Add(body);
             }
