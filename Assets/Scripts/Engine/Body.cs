@@ -10,6 +10,11 @@ public class Body : MonoBehaviour
     public Vector2 position { get { return transform.position; } set { transform.position = value; } }
 
     public float mass { get; set; } = 1.0f;
+    
+
+    // Air resistance.
+    public float damping { get; set; } = 0;
+
 
     public void AddForce(Vector2 force)
     {
@@ -18,6 +23,6 @@ public class Body : MonoBehaviour
 
     public void Step(float dt)
     {
-        acceleration = new Vector2(0, -9.81f) + (force / mass);
+        acceleration = World.Instance.Gravity + (force / mass);
     }
 }
