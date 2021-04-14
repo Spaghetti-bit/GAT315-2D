@@ -8,4 +8,6 @@ public class FloatData : ScriptableObject
 {
     public float value;
 
+    public static implicit operator float (FloatData data) { return data.value; }
+
 }

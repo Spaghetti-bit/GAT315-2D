@@ -7,7 +7,8 @@ public class World : MonoBehaviour
     public BoolData simulate;
     public FloatData mass;
     public FloatData gravity;
-    public StringData fps;
+    public FloatData gravitation;
+    public StringData FPSText;
 
     public FloatData fixedFPS;
 
@@ -21,6 +22,11 @@ public class World : MonoBehaviour
     public Vector2 Gravity { get { return new Vector2(0, gravity.value); } }
     public List<Body> bodies { get; set; } = new List<Body>();
 
+
+    //float fps = 0;
+    float fpsAverage = 0;
+    float smoothing = 0.975f;
+
     private void Awake()
     {
         instance = this;
@@ -29,27 +35,29 @@ public class World : MonoBehaviour
     void Update()
     {
         
+        float dt = Time.deltaTime;
+        fpsAverage = (fpsAverage * smoothing) + ((1.0f/dt) * (1.0f - smoothing));
+        FPSText.value = $"FPS: {fpsAverage.ToString("F2")}";
+
         if (!simulate.value) return;
 
 
 
-        float dt = Time.deltaTime;
         timeAccumulator += dt;
-        Debug.Log(1.0f / dt);
-        fps.value = (1.0f / dt).ToString();
+        //Debug.Log(1.0f / dt);
+        GravitationalForce.ApplyForce(bodies, gravitation.value);
 
-        while(timeAccumulator > fixedDeltaTime)
+        while(timeAccumulator >= fixedDeltaTime)
         {
-            bodies.ForEach(body => body.mass = mass.value);
             bodies.ForEach(body => body.Step(fixedDeltaTime));
             bodies.ForEach(body => Integrator.SemiImplicitEuler(body, fixedDeltaTime));
 
-            bodies.ForEach(body => body.force = Vector2.zero);
-            bodies.ForEach(body => body.acceleration = Vector2.zero);
 
             timeAccumulator -= fixedDeltaTime;
         }
 
+        bodies.ForEach(body => body.force = Vector2.zero);
+        bodies.ForEach(body => body.acceleration = Vector2.zero);
 
     }
 }
