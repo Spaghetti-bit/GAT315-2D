@@ -16,7 +16,8 @@ public class GravitationalForce : MonoBehaviour
 
                 Vector2 direction = bodyA.position - bodyB.position;
                 float distanceSqr = Mathf.Max(direction.sqrMagnitude, 1);
-                float force = G * (bodyA.mass * bodyB.mass) / distanceSqr;
+                float force = G * ((bodyA.mass * bodyB.mass) / distanceSqr);
+
                 bodyA.AddForce((-direction.normalized * force), Body.eForceMode.Force);
                 bodyB.AddForce((direction.normalized * force), Body.eForceMode.Force);
             }

@@ -37,10 +37,12 @@ public class World : MonoBehaviour
         
         float dt = Time.deltaTime;
         fpsAverage = (fpsAverage * smoothing) + ((1.0f/dt) * (1.0f - smoothing));
-        FPSText.value = $"FPS: {fpsAverage.ToString("F2")}";
+        FPSText.value = $"FPS: {fpsAverage.ToString("F2")} : {(dt * 1000.0f).ToString("F1")} ms";
 
-        if (!simulate.value) return;
+        if (!simulate) return;
 
+
+        bodies.ForEach(body => body.shape.color = new Color(Random.value * 255, Random.value * 255, Random.value * 255));
 
 
         timeAccumulator += dt;
