@@ -11,6 +11,8 @@ public class Creator : Action
     public FloatData size;
     public FloatData density;
 
+    public GameObject objectContainer;
+
 
     bool action { get; set; } = false;
     public bool oneTime { get; set; } = false;
@@ -33,7 +35,7 @@ public class Creator : Action
             oneTime = false;
 
             Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            GameObject gameObject = Instantiate(original, position, Quaternion.identity);
+            GameObject gameObject = Instantiate(original, position, Quaternion.identity, objectContainer.transform);
 
             if(gameObject.TryGetComponent<Body>(out Body body))
             {
