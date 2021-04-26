@@ -18,8 +18,6 @@ public static class Integrator
         body.velocity += (body.acceleration * dt);
         body.position += (body.velocity * dt);
         body.velocity *= (1f / (1f + body.damping * dt));
-
-        // Add damping?
     }
 
 }

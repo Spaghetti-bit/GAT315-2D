@@ -5,6 +5,8 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     public BoolData simulate;
+    public BoolData collision;
+    public BoolData wrap;
     public FloatData mass;
     public FloatData gravity;
     public FloatData gravitation;
@@ -13,6 +15,7 @@ public class World : MonoBehaviour
     public FloatData fixedFPS;
 
     float timeAccumulator;
+    Vector2 size;
     public float fixedDeltaTime { get { return 1 / fixedFPS.value; } }
     //
 
@@ -30,6 +33,7 @@ public class World : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        size = Camera.main.ViewportToWorldPoint(Vector2.one);
     }
 
     void Update()
@@ -42,20 +46,39 @@ public class World : MonoBehaviour
         if (!simulate) return;
 
 
-        bodies.ForEach(body => body.shape.color = new Color(Random.value * 255, Random.value * 255, Random.value * 255));
 
 
-        timeAccumulator += dt;
         //Debug.Log(1.0f / dt);
         GravitationalForce.ApplyForce(bodies, gravitation.value);
+        timeAccumulator += dt;
 
         while(timeAccumulator >= fixedDeltaTime)
         {
             bodies.ForEach(body => body.Step(fixedDeltaTime));
             bodies.ForEach(body => Integrator.SemiImplicitEuler(body, fixedDeltaTime));
 
+            bodies.ForEach(body => body.shape.color = Color.white );
+
+            // if collision
+            if(collision)
+            {
+                Collision.CreateContacts(bodies, out List<Contact> contacts);
+                contacts.ForEach(contact =>
+                {
+                    contact.bodyA.shape.color = Color.red;
+                    contact.bodyB.shape.color = Color.red;
+                });
+
+                ContactSolver.Resolve(contacts);
+            }
+            //
 
             timeAccumulator -= fixedDeltaTime;
+        }
+
+        if(wrap)
+        {
+            bodies.ForEach(body => body.position = Utilities.Wrap(body.position, -size, size));
         }
 
         bodies.ForEach(body => body.force = Vector2.zero);

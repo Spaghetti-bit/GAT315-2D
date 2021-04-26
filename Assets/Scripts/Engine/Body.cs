@@ -28,16 +28,18 @@ public class Body : MonoBehaviour
     public Vector2 position { get { return transform.position; } set { transform.position = value; } }
 
     public float mass { get => shape.mass; }
-    
-
-    // Air resistance.
+    public float inverseMass { get => (mass == 0) ? 0 : 1f / mass; }
     public float damping { get; set; } = 0;
+
+    public float restitution { get; set; } = 0.5f;
 
     public eType type { get; set; }
 
 
     public void AddForce(Vector2 force, eForceMode forceMode = eForceMode.Force)
     {
+        if (type == eType.Static) return;
+
         switch (forceMode)
         {
             case eForceMode.Force:
@@ -58,6 +60,8 @@ public class Body : MonoBehaviour
 
     public void Step(float dt)
     {
-        acceleration = World.Instance.Gravity + (force / mass);
+        if (type != eType.Dynamic) return;
+
+        acceleration = World.Instance.Gravity + (force * inverseMass);
     }
 }
