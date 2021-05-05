@@ -4,6 +4,14 @@ using UnityEngine;
 
 public abstract class Action : MonoBehaviour
 {
+    public enum eActionType
+    {
+        Creator,
+        Connector
+    }
+
+    public abstract eActionType actionType { get; }
+
     public bool active { get; set; } = false;
 
     public abstract void StartAction();

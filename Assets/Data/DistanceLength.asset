@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37b9db2a0ec022643b85614bc1748d22, type: 3}
-  m_Name: Restitution
+  m_Script: {fileID: 11500000, guid: add2a7c4ed6d3834887726c36295ad27, type: 3}
+  m_Name: DistanceLength
   m_EditorClassIdentifier: 
-  value: 0.01
+  value: 0

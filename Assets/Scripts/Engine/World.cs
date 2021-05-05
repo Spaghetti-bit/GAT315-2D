@@ -24,6 +24,7 @@ public class World : MonoBehaviour
 
     public Vector2 Gravity { get { return new Vector2(0, gravity.value); } }
     public List<Body> bodies { get; set; } = new List<Body>();
+    public List<Spring> springs { get; set; } = new List<Spring>();
 
 
     //float fps = 0;
@@ -43,6 +44,11 @@ public class World : MonoBehaviour
         fpsAverage = (fpsAverage * smoothing) + ((1.0f/dt) * (1.0f - smoothing));
         FPSText.value = $"FPS: {fpsAverage.ToString("F2")} : {(dt * 1000.0f).ToString("F1")} ms";
 
+
+        // Draw springs connected between bodies. (A->B)
+        springs.ForEach(spring => spring.Draw());
+
+
         if (!simulate) return;
 
 
@@ -50,6 +56,8 @@ public class World : MonoBehaviour
 
         //Debug.Log(1.0f / dt);
         GravitationalForce.ApplyForce(bodies, gravitation.value);
+        springs.ForEach(spring => spring.ApplyForce());
+
         timeAccumulator += dt;
 
         while(timeAccumulator >= fixedDeltaTime)

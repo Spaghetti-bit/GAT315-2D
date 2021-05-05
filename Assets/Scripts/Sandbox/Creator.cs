@@ -16,6 +16,8 @@ public class Creator : Action
 
     public GameObject objectContainer;
 
+    public override eActionType actionType => eActionType.Creator;
+
 
     bool action { get; set; } = false;
     public bool oneTime { get; set; } = false;

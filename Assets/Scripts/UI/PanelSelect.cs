@@ -12,11 +12,13 @@ public class PanelSelect : MonoBehaviour
         public GameObject panel;
         public Button button;
         public KeyCode shortcut;
+        public Action.eActionType actionType;
     }
 
     public KeyCode toggleKey;
     public GameObject masterPanel;
     public PanelInfo[] panels;
+    public Editor editor;
 
     public void SetPanelActive(PanelInfo panelInfo)
     {
@@ -26,6 +28,11 @@ public class PanelSelect : MonoBehaviour
         {
             bool active = (pInfo.Equals(panelInfo));
             pInfo.panel.SetActive(active);
+            if(active)
+            {
+                editor.SetAction(pInfo.actionType);
+            }
+
         }
 
         //for (int i = 0; i < panels.Length; i++)
