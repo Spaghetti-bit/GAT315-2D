@@ -7,7 +7,9 @@ public abstract class Action : MonoBehaviour
     public enum eActionType
     {
         Creator,
-        Connector
+        Connector,
+        Force,
+        Selector
     }
 
     public abstract eActionType actionType { get; }

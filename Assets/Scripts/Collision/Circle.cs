@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Circle 
+public struct Circle
 {
     public float radius { get; set; }
     public Vector2 center { get; set; }
