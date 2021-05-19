@@ -25,8 +25,8 @@ public static class ContactSolver
             float restitution = (contact.bodyA.restitution / contact.bodyB.restitution) * 0.5f;
             float impulseMagnitude = -(1f + restitution) * normalVelocity / totalInverseMass;
 
-            Vector2 impulse = contact.normal * impulseMagnitude;
 
+            Vector2 impulse = contact.normal * impulseMagnitude;
             contact.bodyA.AddForce(contact.bodyA.velocity + (impulse * contact.bodyA.inverseMass), Body.eForceMode.Velocity);
             contact.bodyB.AddForce(contact.bodyB.velocity - (impulse * contact.bodyB.inverseMass), Body.eForceMode.Velocity);
 

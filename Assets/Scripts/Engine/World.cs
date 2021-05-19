@@ -4,17 +4,30 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+    public StringData FPSText;
+    public StringData collisionText;
     public BoolData simulate;
+    public BoolData collisionDebug;
     public BoolData collision;
     public BoolData wrap;
     public FloatData mass;
     public FloatData gravity;
     public FloatData gravitation;
-    public StringData FPSText;
 
     public FloatData fixedFPS;
+    public VectorField vectorField;
+
+
+    public BroadphaseTypeData bodyphaseType;
 
     float timeAccumulator;
+
+    BroadPhase broadPhase = new BVH();
+    BroadPhase[] broadPhases = { new NullBroadPhase(), new Quadtree(), new BVH() };
+    public AABB AABB { get => aabb; }
+    AABB aabb;
+
+    public Vector2 WorldSize { get => size * 2; }
     Vector2 size;
     public float fixedDeltaTime { get { return 1 / fixedFPS.value; } }
     //
@@ -36,6 +49,7 @@ public class World : MonoBehaviour
     {
         instance = this;
         size = Camera.main.ViewportToWorldPoint(Vector2.one);
+        aabb = new AABB(Vector2.zero, size * 2);
     }
 
     void Update()
@@ -49,16 +63,18 @@ public class World : MonoBehaviour
         // Draw springs connected between bodies. (A->B)
         springs.ForEach(spring => spring.Draw());
 
+        broadPhase = broadPhases[bodyphaseType.index];
 
         if (!simulate) return;
 
 
 
 
-        //Debug.Log(1.0f / dt);
+        // Forces
         GravitationalForce.ApplyForce(bodies, gravitation.value);
         forces.ForEach(force => bodies.ForEach(body => force.ApplyForce(body)));
         springs.ForEach(spring => spring.ApplyForce());
+        bodies.ForEach(body => vectorField.ApplyForce(body));
 
         timeAccumulator += dt;
 
@@ -67,24 +83,36 @@ public class World : MonoBehaviour
             bodies.ForEach(body => body.Step(fixedDeltaTime));
             bodies.ForEach(body => Integrator.SemiImplicitEuler(body, fixedDeltaTime));
 
-            bodies.ForEach(body => body.shape.color = Color.white );
 
             // if collision
             if(collision)
             {
-                Collision.CreateContacts(bodies, out List<Contact> contacts);
-                contacts.ForEach(contact =>
-                {
-                    contact.bodyA.shape.color = Color.red;
-                    contact.bodyB.shape.color = Color.red;
-                });
+                bodies.ForEach(body => body.shape.color = Color.white );
+                broadPhase.Build(aabb, bodies);
+
+                Collision.CreateBroadPhaseContacts(broadPhase, bodies, out List<Contact> contacts);
+                Collision.CreateNarrowPhaseContacts(ref contacts);
+                contacts.ForEach(contact => Collision.UpdateContactInfo(ref contact));
 
                 ContactSolver.Resolve(contacts);
+
+                if(collisionDebug)
+                {
+                    contacts.ForEach(contact =>
+                    {
+                        contact.bodyA.shape.color = Color.red;
+                        contact.bodyB.shape.color = Color.red;
+                    });
+                }
             }
             //
 
             timeAccumulator -= fixedDeltaTime;
         }
+
+
+        collisionText.value = $"Broad Phase: {BroadPhase.potentialCollisionCount.ToString()}";
+        if(collisionDebug) broadPhase.Draw();
 
         if(wrap)
         {
